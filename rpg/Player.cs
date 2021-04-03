@@ -13,6 +13,10 @@ namespace rpg
         private Dir direction = Dir.Down;
         private bool isMoving = false;
 
+        public SpriteAnimation anim;
+
+        public SpriteAnimation[] animations = new SpriteAnimation[4];
+
 
         public Player()
         {
@@ -43,6 +47,7 @@ namespace rpg
             float dt = (float)gameTime.ElapsedGameTime.TotalSeconds;
             isMoving = false;
 
+            //check if key is down, set direction, set is moving to true
             if (kState.IsKeyDown(Keys.Right))
             {
                 direction = Dir.Right;
@@ -64,6 +69,7 @@ namespace rpg
                 isMoving = true;
             }
 
+            //if player is moving, then change the position at rate of speed * dt
             if (isMoving)
             {
                 switch (direction)
@@ -82,6 +88,23 @@ namespace rpg
                         break;
                 }
             }
+
+            //set the appropriate animation for direction player is moving
+            anim = animations[(int)direction];
+
+            //position of animation is center of player position
+            anim.Position = new Vector2(position.X - 48, position.Y -48);
+
+            //stop animation if player is not moving
+            if (isMoving) {
+                anim.Update(gameTime);
+            }
+            else
+            {
+                //set frame to stationary person image (index 1 of each sprite sheet)
+                anim.setFrame(1);
+            }
+            
             
 
         }
