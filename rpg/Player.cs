@@ -13,6 +13,7 @@ namespace rpg
         private Dir direction = Dir.Down;
         private bool isMoving = false;
         private KeyboardState kStateOld = Keyboard.GetState();
+        public bool dead = false;
 
         public SpriteAnimation anim;
 
@@ -29,6 +30,10 @@ namespace rpg
             get
             {
                 return position;
+            }
+            set
+            {
+                position = value;
             }
         }
 
@@ -76,22 +81,31 @@ namespace rpg
                 isMoving = false;
             }
 
+            if (dead)
+            {
+                isMoving = false;
+            }
+
             //if player is moving, then change the position at rate of speed * dt
             if (isMoving)
             {
                 switch (direction)
                 {
                     case Dir.Right:
-                        position.X += speed * dt;
+                        if (position.X < 1275)
+                            position.X += speed * dt;
                         break;
                     case Dir.Left:
-                        position.X -= speed * dt;
+                        if (position.X > 225)
+                            position.X -= speed * dt;
                         break;
                     case Dir.Up:
-                        position.Y -= speed * dt;
+                        if (position.Y > 200)
+                            position.Y -= speed * dt;
                         break;
                     case Dir.Down:
-                        position.Y += speed * dt;
+                        if (position.Y < 1250)
+                            position.Y += speed * dt;
                         break;
                 }
             }
@@ -118,7 +132,7 @@ namespace rpg
             }
 
             //creates a projectile from the players position and direction
-            if (kState.IsKeyDown(Keys.Space) && kStateOld.IsKeyUp(Keys.Space))
+            if (kState.IsKeyDown(Keys.Space) && kStateOld.IsKeyUp(Keys.Space) && !dead)
             {
                 Projectile.projectiles.Add(new Projectile(position, direction));
                 
