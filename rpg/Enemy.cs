@@ -11,7 +11,7 @@ namespace rpg
         public static List<Enemy> enemies = new List<Enemy>();
 
         private Vector2 position = new Vector2(0, 0);
-        private int speed = 150;
+        private int speed = 100;
         public SpriteAnimation anim;
         public int radius = 30;
         private bool dead = false;
