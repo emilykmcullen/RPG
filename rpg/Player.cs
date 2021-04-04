@@ -12,6 +12,7 @@ namespace rpg
         private int speed = 300;
         private Dir direction = Dir.Down;
         private bool isMoving = false;
+        private KeyboardState kStateOld = Keyboard.GetState();
 
         public SpriteAnimation anim;
 
@@ -69,6 +70,12 @@ namespace rpg
                 isMoving = true;
             }
 
+            //can't move while shooting a projectile
+            if (kState.IsKeyDown(Keys.Space))
+            {
+                isMoving = false;
+            }
+
             //if player is moving, then change the position at rate of speed * dt
             if (isMoving)
             {
@@ -96,7 +103,12 @@ namespace rpg
             anim.Position = new Vector2(position.X - 48, position.Y -48);
 
             //stop animation if player is not moving
-            if (isMoving) {
+
+            if (kState.IsKeyDown(Keys.Space))
+            {
+                anim.setFrame(0);
+            }
+            else if (isMoving) {
                 anim.Update(gameTime);
             }
             else
@@ -104,8 +116,18 @@ namespace rpg
                 //set frame to stationary person image (index 1 of each sprite sheet)
                 anim.setFrame(1);
             }
-            
-            
+
+            //creates a projectile from the players position and direction
+            if (kState.IsKeyDown(Keys.Space) && kStateOld.IsKeyUp(Keys.Space))
+            {
+                Projectile.projectiles.Add(new Projectile(position, direction));
+                
+            }
+            kStateOld = kState;
+
+
+
+
 
         }
     }
