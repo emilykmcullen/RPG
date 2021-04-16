@@ -46,7 +46,7 @@ namespace rpg
                         break;
                 }
 
-                Enemy.enemies.Add(new Enemy(new Vector2(100, 100), spriteSheet));
+                
                 timer = maxTime;
 
                 if (maxTime > 0.5)
